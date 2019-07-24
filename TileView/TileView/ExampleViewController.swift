@@ -16,6 +16,15 @@ class TodayViewController: UIViewController, TileViewSourceDelegate, UIScrollVie
     
     // MARK: Define Subviews
     
+    // Collection View
+    let collectionView: UICollectionView = { () -> UICollectionView in
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.register(CalendarCell.self, forCellWithReuseIdentifier: "CalendarCell")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
+        return collectionView
+    }()
+    
     // Main Tile Views
     let personalTasks = { () -> TileView in
         
