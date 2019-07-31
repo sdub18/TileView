@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PersonalTasksView: UIView, UITableViewDelegate, UITableViewDataSource, TileViewSourceDelegate {
+class PersonalTasksView: UIView, UITableViewDelegate, UITableViewDataSource, TileViewDataSource {
     
     // TESTING PURPOSES ONLY
     let tasks = { () -> [PersonalTask] in

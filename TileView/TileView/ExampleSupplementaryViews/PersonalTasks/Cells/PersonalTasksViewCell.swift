@@ -86,7 +86,6 @@ Height /        /___________/
     
     func constrainForCompactTile() {
         // Deactivate Previous Constraints and Instantiate New Ones
-        self.constraints.deActivate()
         NSLayoutConstraint.activate([
             
             // Check Box Button

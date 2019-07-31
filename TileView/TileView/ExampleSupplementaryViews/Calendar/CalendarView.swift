@@ -8,9 +8,9 @@
 
 import UIKit
 
-class CalendarView: UIView, TileViewSourceDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class CalendarView: UIView, TileViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let collectionView: UICollectionView = { () -> UICollectionView in
+    let calendarCollectionView: UICollectionView = { () -> UICollectionView in
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(CalendarCell.self, forCellWithReuseIdentifier: "CalendarCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -20,22 +20,22 @@ class CalendarView: UIView, TileViewSourceDelegate, UICollectionViewDataSource, 
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(collectionView)
+        self.addSubview(calendarCollectionView)
         
         NSLayoutConstraint.activate([
             
-            collectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-            collectionView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
-            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
-            collectionView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20),
+            calendarCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            calendarCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
+            calendarCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
+            calendarCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20),
             
             ])
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        calendarCollectionView.delegate = self
+        calendarCollectionView.dataSource = self
     }
     
     required init?(coder: NSCoder) {
@@ -94,7 +94,7 @@ class CalendarView: UIView, TileViewSourceDelegate, UICollectionViewDataSource, 
     }
     
     func tileViewObjectdidExpand(_ tileViewObject: TileView) {
-        
+        superview!.superview!.bringSubviewToFront(tileViewObject)
     }
     
     func tileViewObjectdidClose(_ tileViewObject: TileView) {

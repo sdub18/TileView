@@ -73,7 +73,6 @@ class CalendarCell: UICollectionViewCell {
     
     func constrainForCompactTile() {
         // Deactivate Previous Constraints and Instantiate New Ones
-        self.constraints.deActivate()
         NSLayoutConstraint.activate([
             
                 dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2),

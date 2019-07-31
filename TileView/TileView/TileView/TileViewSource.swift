@@ -18,7 +18,7 @@ enum TileType {
 }
 
 // MARK: Delegate Methods for responding to actions made on the Tile View Object
-protocol TileViewSourceDelegate: class {
+protocol TileViewDataSource: class {
     
     func tileViewObjectdidExpand(_ tileViewObject: TileView)
     
@@ -53,8 +53,16 @@ protocol TileViewSourceDelegate: class {
     
 }
 
+protocol TileViewSourceDelegate: class {
+    
+    func tileViewObjectDidExpand(_ tileViewObject: TileView)
+    
+    func tileViewObjectDidClose(_ tileViewObject: TileView)
+}
+
 protocol TileViewSource: class {
     
+    var dataSource: TileViewDataSource? { get set }
     var delegate: TileViewSourceDelegate? { get set }
     
     var isActive: Bool { get set }

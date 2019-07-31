@@ -13,6 +13,7 @@ class TileView: UIView, TileViewSource {
     // MARK: Model Attributes
     var touchGesture = UILongPressGestureRecognizer()
     var pinchGesture = UIPinchGestureRecognizer()
+    var dataSource: TileViewDataSource?
     var delegate: TileViewSourceDelegate?
     var title: String = "Default Title"
     var mainColor: UIColor
@@ -24,10 +25,10 @@ class TileView: UIView, TileViewSource {
     
     // Full screen constraints accessed when the view is expanded
     lazy var fullScreenConstraints = [
-        self.topAnchor.constraint(equalTo: superview!.superview!.topAnchor),
-        self.bottomAnchor.constraint(equalTo: superview!.superview!.bottomAnchor),
-        self.leftAnchor.constraint(equalTo: superview!.superview!.leftAnchor),
-        self.rightAnchor.constraint(equalTo: superview!.superview!.rightAnchor)
+        self.topAnchor.constraint(equalTo: superview!.superview!.superview!.topAnchor),
+        self.bottomAnchor.constraint(equalTo: superview!.superview!.superview!.bottomAnchor),
+        self.leftAnchor.constraint(equalTo: superview!.superview!.superview!.leftAnchor),
+        self.rightAnchor.constraint(equalTo: superview!.superview!.superview!.rightAnchor)
     ]
     
     // CORNER RADIUS FOR TILE VIEW OBJECT
@@ -51,7 +52,7 @@ class TileView: UIView, TileViewSource {
         let button = UIButton()
         button.addTarget(self, action: #selector(closeButtonPressed(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: StringID.closeImage.localized), for: .normal)
+        button.setImage(UIImage(named: "CloseGlyph"), for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.layer.cornerRadius = 20
         button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.7495451627)
@@ -172,13 +173,10 @@ class TileView: UIView, TileViewSource {
     @objc func touchesMade(sender : UILongPressGestureRecognizer) {
         if sender.state == .began {
             self.squish(forDuration: 0.2, fromVal: 1, toVal: 0.95)
-            superview?.bringSubviewToFront(self)
         } else if sender.state == .ended {
-            self.expand()
             touchGesture.isEnabled = false
             pinchGesture.isEnabled = true
-            self.expand()
-            self.delegate?.tileViewObjectdidExpand(self)
+            self.delegate?.tileViewObjectDidExpand(self)
             titleLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .largeTitle).pointSize, weight: .heavy)
         }
     }
@@ -194,9 +192,8 @@ class TileView: UIView, TileViewSource {
     @objc func closeButtonPressed(_ sender : AnyObject) {
         touchGesture.isEnabled = true
         pinchGesture.isEnabled = false
-        self.contract()
         titleLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title1).pointSize, weight: .heavy)
-        self.delegate?.tileViewObjectdidClose(self)
+        self.delegate?.tileViewObjectDidClose(self)
     }
     
 }

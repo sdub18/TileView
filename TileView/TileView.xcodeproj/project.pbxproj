@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3117627122E8861400ECB7EA /* UICheckBoxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3117627022E8861400ECB7EA /* UICheckBoxButton.swift */; };
 		31BB15E522E7B33B00158349 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BB15E422E7B33B00158349 /* AppDelegate.swift */; };
-		31BB15E722E7B33B00158349 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BB15E622E7B33B00158349 /* SceneDelegate.swift */; };
 		31BB15E922E7B33B00158349 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BB15E822E7B33B00158349 /* ExampleViewController.swift */; };
 		31BB15EC22E7B33B00158349 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31BB15EA22E7B33B00158349 /* Main.storyboard */; };
 		31BB15EE22E7B33C00158349 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31BB15ED22E7B33C00158349 /* Assets.xcassets */; };
@@ -27,6 +27,8 @@
 		31BB163622E7B49B00158349 /* PersonalTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BB162A22E7B49B00158349 /* PersonalTasks.swift */; };
 		31BB163B22E7B53400158349 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BB163A22E7B53400158349 /* Colors.swift */; };
 		31BB163D22E7B5F200158349 /* UIView+AddSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BB163C22E7B5F200158349 /* UIView+AddSubview.swift */; };
+		31BB164022E8836E00158349 /* TileViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BB163F22E8836E00158349 /* TileViewCell.swift */; };
+		31DB8EC022E8F9F600A13EB8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB8EBF22E8F9F500A13EB8 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,9 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3117627022E8861400ECB7EA /* UICheckBoxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICheckBoxButton.swift; sourceTree = "<group>"; };
 		31BB15E122E7B33B00158349 /* TileView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TileView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		31BB15E422E7B33B00158349 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		31BB15E622E7B33B00158349 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		31BB15E822E7B33B00158349 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		31BB15EB22E7B33B00158349 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		31BB15ED22E7B33C00158349 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -73,6 +75,8 @@
 		31BB162A22E7B49B00158349 /* PersonalTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalTasks.swift; sourceTree = "<group>"; };
 		31BB163A22E7B53400158349 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		31BB163C22E7B5F200158349 /* UIView+AddSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AddSubview.swift"; sourceTree = "<group>"; };
+		31BB163F22E8836E00158349 /* TileViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileViewCell.swift; sourceTree = "<group>"; };
+		31DB8EBF22E8F9F500A13EB8 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +128,9 @@
 			isa = PBXGroup;
 			children = (
 				31BB15E422E7B33B00158349 /* AppDelegate.swift */,
-				31BB15E622E7B33B00158349 /* SceneDelegate.swift */,
+				31DB8EBF22E8F9F500A13EB8 /* SceneDelegate.swift */,
 				31BB15E822E7B33B00158349 /* ExampleViewController.swift */,
+				31BB163E22E8834C00158349 /* TileView Cells */,
 				31BB161922E7B37800158349 /* TileView */,
 				31BB161422E7B35000158349 /* ExampleSupplementaryViews */,
 				31BB163922E7B51F00158349 /* Utilities */,
@@ -170,6 +175,7 @@
 				31BB161522E7B36900158349 /* TileView.swift */,
 				31BB161722E7B37400158349 /* TileViewSource.swift */,
 				31BB161A22E7B38600158349 /* TileViewAnimations.swift */,
+				3117627022E8861400ECB7EA /* UICheckBoxButton.swift */,
 			);
 			path = TileView;
 			sourceTree = "<group>";
@@ -218,6 +224,14 @@
 				31BB163C22E7B5F200158349 /* UIView+AddSubview.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		31BB163E22E8834C00158349 /* TileView Cells */ = {
+			isa = PBXGroup;
+			children = (
+				31BB163F22E8836E00158349 /* TileViewCell.swift */,
+			);
+			path = "TileView Cells";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -356,11 +370,13 @@
 				31BB163322E7B49B00158349 /* PersonalTasksDetailsCell.swift in Sources */,
 				31BB163B22E7B53400158349 /* Colors.swift in Sources */,
 				31BB15E922E7B33B00158349 /* ExampleViewController.swift in Sources */,
+				3117627122E8861400ECB7EA /* UICheckBoxButton.swift in Sources */,
 				31BB163422E7B49B00158349 /* PersonalTasksViewCell.swift in Sources */,
+				31DB8EC022E8F9F600A13EB8 /* SceneDelegate.swift in Sources */,
 				31BB15E522E7B33B00158349 /* AppDelegate.swift in Sources */,
 				31BB163D22E7B5F200158349 /* UIView+AddSubview.swift in Sources */,
 				31BB161622E7B36900158349 /* TileView.swift in Sources */,
-				31BB15E722E7B33B00158349 /* SceneDelegate.swift in Sources */,
+				31BB164022E8836E00158349 /* TileViewCell.swift in Sources */,
 				31BB163622E7B49B00158349 /* PersonalTasks.swift in Sources */,
 				31BB161B22E7B38600158349 /* TileViewAnimations.swift in Sources */,
 				31BB163222E7B49B00158349 /* CalendarView.swift in Sources */,
@@ -578,6 +594,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XLEYC29AG5;
 				INFOPLIST_FILE = TileViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -599,6 +616,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XLEYC29AG5;
 				INFOPLIST_FILE = TileViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
