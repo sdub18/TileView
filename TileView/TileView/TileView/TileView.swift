@@ -31,6 +31,8 @@ class TileView: UIView, TileViewSource {
         self.rightAnchor.constraint(equalTo: superview!.superview!.superview!.rightAnchor)
     ]
     
+    var sizeClass: TileSizeClass
+    
     // CORNER RADIUS FOR TILE VIEW OBJECT
     let CORNER_RADIUS = CGFloat(20)
     
@@ -76,6 +78,7 @@ class TileView: UIView, TileViewSource {
     
     // Generic Initialization with generic constraints to satisfy variables
     override init(frame: CGRect) {
+        self.sizeClass = .previewRegular
         self.isActive = true
         self.type = .unspecified
         self.mainColor = .gray
@@ -89,12 +92,13 @@ class TileView: UIView, TileViewSource {
         setupSubviews()
     }
     
-    convenience init(ofType: TileType, withTitle: String, primaryTitleColor: UIColor, secondaryTitleColor: UIColor) {
+    convenience init(ofType: TileType, withTitle: String, primaryTitleColor: UIColor, sizeClass: TileSizeClass) {
         self.init()
         self.title = withTitle
         self.isActive = true
         self.type = ofType
         self.mainColor = primaryTitleColor
+        self.sizeClass = sizeClass
         setupSubviews()
     }
     

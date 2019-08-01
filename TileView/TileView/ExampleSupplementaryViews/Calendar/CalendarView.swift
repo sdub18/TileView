@@ -94,7 +94,7 @@ class CalendarView: UIView, TileViewDataSource, UICollectionViewDataSource, UICo
     }
     
     func tileViewObjectdidExpand(_ tileViewObject: TileView) {
-        superview!.superview!.bringSubviewToFront(tileViewObject)
+        
     }
     
     func tileViewObjectdidClose(_ tileViewObject: TileView) {

@@ -17,6 +17,12 @@ enum TileType {
     case unspecified
 }
 
+enum TileSizeClass {
+    case previewCompact
+    case previewRegular
+    case fullScreen
+}
+
 // MARK: Delegate Methods for responding to actions made on the Tile View Object
 protocol TileViewDataSource: class {
     

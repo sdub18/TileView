@@ -25,28 +25,69 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         return collectionView
     }()
     
-    // Main Tile Views
-    let personalTasks = { () -> TileView in
+    var tileViewArray : [TileView] = [
+    
+        // Calendar
+        { () -> TileView in
+            
+            let tileView = TileView(ofType: .calendar, withTitle: "Calendar", primaryTitleColor: Colors.CALENDAR_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let calendarView = CalendarView()
+            tileView.contentView.addConstrainedSubview(calendarView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = calendarView
+            
+            return tileView
+        }() ,
         
-        let tileView = TileView(ofType: .personalTasks, withTitle: "Personal Activity", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, secondaryTitleColor: Colors.PERSONAL_TASKS_SECONDARY_COLOR)
-        tileView.translatesAutoresizingMaskIntoConstraints = false
-        let personalTasksView = PersonalTasksView()
-        tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
-        tileView.dataSource = personalTasksView
+        // Personal Tasks
+        { () -> TileView in
+            
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewRegular)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            
+            return tileView
+        }() ,
         
-        return tileView
-    }()
+        { () -> TileView in
+            
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewRegular)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            
+            return tileView
+        }() ,
+    
+    
+    ]
     
     // MARK: View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var counter = 0
+        
         self.view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         
         self.view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        for tileView in tileViewArray {
+            tileView.delegate = self
+            tileView.tag = counter
+            counter += 1
+        }
 
+    }
+    
+    override func viewWillLayoutSubviews() {
+        collectionView.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -58,6 +99,8 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
             ])
+        
+        collectionView.reloadData()
     }
     
     // MARK: Handle Delegatation
@@ -65,45 +108,48 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         collectionView.isScrollEnabled = false
         
         collectionView.performBatchUpdates({
-            selectedCell = tileViewObject.tag
+            
+            tileViewArray.remove(at: tileViewObject.tag)
+            tileViewArray.insert(tileViewObject, at: 0)
+            
+            selectedCell = 0
+            
+            collectionView.moveItem(at: IndexPath(item: tileViewObject.tag, section: 0), to: IndexPath(item: 0, section: 0))
+            
+            collectionView.setContentOffset(CGPoint.zero, animated: true)
+            
             tileViewObject.expand()
         }, completion: nil)
-    
     }
     
     func tileViewObjectDidClose(_ tileViewObject: TileView) {
         collectionView.isScrollEnabled = true
         
         collectionView.performBatchUpdates({
+            
+            tileViewArray.remove(at: 0)
+            tileViewArray.insert(tileViewObject, at: tileViewObject.tag)
+            
             selectedCell = -1
+            
+            collectionView.moveItem(at: IndexPath(item: 0, section: 0), to: IndexPath(item: tileViewObject.tag, section: 0))
+            
+            
             tileViewObject.contract()
         }, completion: nil)
     }
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return tileViewArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TileViewCell", for: indexPath) as! TileViewCell
-        cell.tileView.tag = indexPath.row
-        cell.tileView.delegate = self
         
+        cell.tileView = tileViewArray[indexPath.row]
         
-        
-        
-        
-        cell.tileView = personalTasks
         return cell
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-        // Call New Constraints AFTER the main view has been appropriately resized
-        coordinator.animate(alongsideTransition: nil) { (_) in
-            
-        }
     }
     
 }
@@ -117,7 +163,14 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
         if indexPath.row == selectedCell {
             return CGSize(width: view.frame.width, height: view.frame.height)
         } else {
-            return CGSize(width: view.frame.width / 2 - 50, height: view.frame.height / 2)
+            switch tileViewArray[indexPath.row].sizeClass {
+            case .fullScreen:
+                return CGSize(width: view.frame.width, height: view.frame.height)
+            case .previewCompact:
+                return CGSize(width: view.frame.width / 4, height: 450)
+            case .previewRegular:
+                return CGSize(width: view.frame.width * 2 / 3, height: 450)
+            }
         }
     }
 
@@ -127,7 +180,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
         if section == selectedCell {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
-            return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            return UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 20)
         }
     }
 
@@ -137,7 +190,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
         if section == selectedCell {
             return 0
         } else {
-            return 10
+            return 0
         }
     }
 
@@ -147,8 +200,10 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
         if section == selectedCell {
             return 0
         } else {
-            return 10
+            return 20
         }
     }
+    
+    
 }
 
