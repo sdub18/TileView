@@ -25,17 +25,21 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         return collectionView
     }()
     
+    // Current Content Offset of collection View
+    var contentOffset: CGPoint = CGPoint.zero
+    
     var tileViewArray : [TileView] = [
     
         // Calendar
         { () -> TileView in
-            
+
             let tileView = TileView(ofType: .calendar, withTitle: "Calendar", primaryTitleColor: Colors.CALENDAR_PRIMARY_COLOR, sizeClass: .previewCompact)
             tileView.translatesAutoresizingMaskIntoConstraints = false
             let calendarView = CalendarView()
             tileView.contentView.addConstrainedSubview(calendarView, top: 0, right: 0, bottom: 0, left: 0)
             tileView.dataSource = calendarView
-            
+            tileView.tag = 0
+
             return tileView
         }() ,
         
@@ -47,18 +51,69 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
             let personalTasksView = PersonalTasksView()
             tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
             tileView.dataSource = personalTasksView
+            tileView.tag = 1
             
             return tileView
         }() ,
         
         { () -> TileView in
-            
+
             let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewRegular)
             tileView.translatesAutoresizingMaskIntoConstraints = false
             let personalTasksView = PersonalTasksView()
             tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
             tileView.dataSource = personalTasksView
-            
+            tileView.tag = 2
+
+            return tileView
+        }() ,
+        
+        // Calendar
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .calendar, withTitle: "Calendar", primaryTitleColor: Colors.CALENDAR_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let calendarView = CalendarView()
+            tileView.contentView.addConstrainedSubview(calendarView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = calendarView
+            tileView.tag = 3
+
+            return tileView
+        }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 4
+
+            return tileView
+        }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 5
+
+            return tileView
+        }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 6
+
             return tileView
         }() ,
     
@@ -100,23 +155,26 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
 
             ])
         
-        collectionView.reloadData()
     }
     
     // MARK: Handle Delegatation
     func tileViewObjectDidExpand(_ tileViewObject: TileView) {
-        collectionView.isScrollEnabled = false
+//        collectionView.isScrollEnabled = false
+        view.bringSubviewToFront(tileViewObject)
         
         collectionView.performBatchUpdates({
             
-            tileViewArray.remove(at: tileViewObject.tag)
-            tileViewArray.insert(tileViewObject, at: 0)
+//             tileViewArray.remove(at: tileViewObject.tag)
+//             tileViewArray.insert(tileViewObject, at: 0)
             
-            selectedCell = 0
+            selectedCell = tileViewObject.tag
             
-            collectionView.moveItem(at: IndexPath(item: tileViewObject.tag, section: 0), to: IndexPath(item: 0, section: 0))
+//             collectionView.moveItem(at: IndexPath(item: tileViewObject.tag, section: 0), to: IndexPath(item: 0, section: 0))
             
-            collectionView.setContentOffset(CGPoint.zero, animated: true)
+            contentOffset = collectionView.contentOffset
+            
+//            collectionView.setContentOffset(CGPoint.zero, animated: true)
+            collectionView.layoutIfNeeded()
             
             tileViewObject.expand()
         }, completion: nil)
@@ -127,18 +185,20 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         
         collectionView.performBatchUpdates({
             
-            tileViewArray.remove(at: 0)
-            tileViewArray.insert(tileViewObject, at: tileViewObject.tag)
-            
             selectedCell = -1
             
-            collectionView.moveItem(at: IndexPath(item: 0, section: 0), to: IndexPath(item: tileViewObject.tag, section: 0))
-            
-            
+//             tileViewArray.remove(at: 0)
+//             tileViewArray.insert(tileViewObject, at: tileViewObject.tag)
+
+//              collectionView.moveItem(at: IndexPath(item: 0, section: 0), to: IndexPath(item: tileViewObject.tag, section: 0))
+
             tileViewObject.contract()
+            collectionView.setContentOffset(contentOffset, animated: true)
+
         }, completion: nil)
     }
-
+    
+    // MARK: Handle Collection View
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tileViewArray.count
@@ -148,6 +208,17 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TileViewCell", for: indexPath) as! TileViewCell
         
         cell.tileView = tileViewArray[indexPath.row]
+        
+        cell.addSubview(cell.tileView)
+        
+        NSLayoutConstraint.activate([
+        
+            (cell.tileView!.topAnchor.constraint(equalTo: cell.topAnchor)),
+            (cell.tileView!.leftAnchor.constraint(equalTo: cell.leftAnchor)),
+            (cell.tileView!.rightAnchor.constraint(equalTo: cell.rightAnchor)),
+            (cell.tileView!.bottomAnchor.constraint(equalTo: cell.bottomAnchor))
+        
+        ])
         
         return cell
     }
@@ -160,7 +231,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if indexPath.row == selectedCell {
+        if tileViewArray[indexPath.row].tag == selectedCell {
             return CGSize(width: view.frame.width, height: view.frame.height)
         } else {
             switch tileViewArray[indexPath.row].sizeClass {
@@ -180,7 +251,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
         if section == selectedCell {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
-            return UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 20)
+            return UIEdgeInsets(top: 30, left: 20, bottom: 20, right: 20)
         }
     }
 
@@ -190,7 +261,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
         if section == selectedCell {
             return 0
         } else {
-            return 0
+            return 20
         }
     }
 
