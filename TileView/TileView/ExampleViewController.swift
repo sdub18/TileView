@@ -13,6 +13,11 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     // Currently Selected Cell
     var selectedCell = -1
     
+    // MARK: Constants
+    
+    // General Padding
+    let PADDING: CGFloat = 20
+    
     // MARK: Define Subviews
     
     // Collection View
@@ -142,6 +147,11 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     }
     
     override func viewWillLayoutSubviews() {
+        
+        if selectedCell != -1 {
+            self.collectionView.scrollToItem(at: IndexPath(item: selectedCell, section: 0), at: .top, animated: true)
+        }
+        
         collectionView.reloadData()
     }
     
@@ -159,25 +169,18 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     
     // MARK: Handle Delegatation
     func tileViewObjectDidExpand(_ tileViewObject: TileView) {
-//        collectionView.isScrollEnabled = false
-        view.bringSubviewToFront(tileViewObject)
         
         collectionView.performBatchUpdates({
-            
-//             tileViewArray.remove(at: tileViewObject.tag)
-//             tileViewArray.insert(tileViewObject, at: 0)
-            
+            view.bringSubviewToFront(tileViewObject)
             selectedCell = tileViewObject.tag
-            
-//             collectionView.moveItem(at: IndexPath(item: tileViewObject.tag, section: 0), to: IndexPath(item: 0, section: 0))
-            
             contentOffset = collectionView.contentOffset
-            
-//            collectionView.setContentOffset(CGPoint.zero, animated: true)
             collectionView.layoutIfNeeded()
-            
             tileViewObject.expand()
-        }, completion: nil)
+            collectionView.reloadData()
+            self.collectionView.scrollToItem(at: IndexPath(item: tileViewObject.tag, section: 0), at: .top, animated: true)
+        }) { (_) in
+            self.collectionView.scrollToItem(at: IndexPath(item: tileViewObject.tag, section: 0), at: .top, animated: true)
+        }
     }
     
     func tileViewObjectDidClose(_ tileViewObject: TileView) {
@@ -238,9 +241,9 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
             case .fullScreen:
                 return CGSize(width: view.frame.width, height: view.frame.height)
             case .previewCompact:
-                return CGSize(width: view.frame.width / 4, height: 450)
+                return CGSize(width: view.frame.width / 3 - (PADDING * 1.5), height: view.frame.height / 2)
             case .previewRegular:
-                return CGSize(width: view.frame.width * 2 / 3, height: 450)
+                return CGSize(width: (view.frame.width * 2 / 3) - (PADDING * 3), height: view.frame.height / 2)
             }
         }
     }
@@ -248,30 +251,30 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        if section == selectedCell {
+        if self.selectedCell != -1 {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
-            return UIEdgeInsets(top: 30, left: 20, bottom: 20, right: 20)
+            return UIEdgeInsets(top: PADDING, left: PADDING, bottom: PADDING, right: PADDING)
         }
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if section == selectedCell {
+        if self.selectedCell != -1 {
             return 0
         } else {
-            return 20
+            return PADDING
         }
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if section == selectedCell {
+        if self.selectedCell != -1 {
             return 0
         } else {
-            return 20
+            return PADDING
         }
     }
     
