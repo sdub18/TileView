@@ -10,13 +10,18 @@ import UIKit
 
 class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    // Currently Selected Cell
-    var selectedCell = -1
-    
     // MARK: Constants
     
     // General Padding
     let PADDING: CGFloat = 20
+    
+    // No Cell Selected Constant
+    let NO_CELL_SELECTED = -1
+    
+    // MARK: Variables
+    
+    // Currently Selected Cell
+    var selectedCell: Int = -1
     
     // MARK: Define Subviews
     
@@ -32,6 +37,19 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     
     // Current Content Offset of collection View
     var contentOffset: CGPoint = CGPoint.zero
+    
+    /*
+     
+     Tile View Array is an array that stores all Tile View Objects [Defined in an anonymous closure]. This is where you will add your additional object as well as specify the size you initially want it to be as well as the subview you want to put inside of it
+     
+     ALL TILE VIEW OBJECTS INSIDE OF THIS CLOSURE REQUIRE:
+     - An Object Tag
+     - A Size Class
+     - A DataSource Reference
+     
+     Otherwise this system will fail.
+     
+     */
     
     var tileViewArray : [TileView] = [
     
@@ -128,7 +146,6 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     // MARK: View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         var counter = 0
         
         self.view.translatesAutoresizingMaskIntoConstraints = false
@@ -148,7 +165,7 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     
     override func viewWillLayoutSubviews() {
         
-        if selectedCell != -1 {
+        if selectedCell != NO_CELL_SELECTED {
             self.collectionView.scrollToItem(at: IndexPath(item: selectedCell, section: 0), at: .top, animated: true)
         }
         
@@ -174,7 +191,6 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
             view.bringSubviewToFront(tileViewObject)
             selectedCell = tileViewObject.tag
             contentOffset = collectionView.contentOffset
-            collectionView.layoutIfNeeded()
             tileViewObject.expand()
             collectionView.reloadData()
             self.collectionView.scrollToItem(at: IndexPath(item: tileViewObject.tag, section: 0), at: .top, animated: true)
@@ -187,17 +203,9 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         collectionView.isScrollEnabled = true
         
         collectionView.performBatchUpdates({
-            
-            selectedCell = -1
-            
-//             tileViewArray.remove(at: 0)
-//             tileViewArray.insert(tileViewObject, at: tileViewObject.tag)
-
-//              collectionView.moveItem(at: IndexPath(item: 0, section: 0), to: IndexPath(item: tileViewObject.tag, section: 0))
-
+            selectedCell = NO_CELL_SELECTED
             tileViewObject.contract()
             collectionView.setContentOffset(contentOffset, animated: true)
-
         }, completion: nil)
     }
     
@@ -241,9 +249,9 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
             case .fullScreen:
                 return CGSize(width: view.frame.width, height: view.frame.height)
             case .previewCompact:
-                return CGSize(width: view.frame.width / 3 - (PADDING * 1.5), height: view.frame.height / 2)
+                return CGSize(width: view.frame.width / 3 - (PADDING * 1.4), height: view.frame.height / 2)
             case .previewRegular:
-                return CGSize(width: (view.frame.width * 2 / 3) - (PADDING * 3), height: view.frame.height / 2)
+                return CGSize(width: (view.frame.width * 2 / 3) - (PADDING * 1.7), height: view.frame.height / 2)
             }
         }
     }
@@ -251,7 +259,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        if self.selectedCell != -1 {
+        if self.selectedCell != NO_CELL_SELECTED {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
             return UIEdgeInsets(top: PADDING, left: PADDING, bottom: PADDING, right: PADDING)
@@ -261,7 +269,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if self.selectedCell != -1 {
+        if self.selectedCell != NO_CELL_SELECTED {
             return 0
         } else {
             return PADDING
@@ -271,7 +279,7 @@ extension ExampleViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if self.selectedCell != -1 {
+        if self.selectedCell != NO_CELL_SELECTED {
             return 0
         } else {
             return PADDING
