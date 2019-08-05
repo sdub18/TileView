@@ -71,6 +71,17 @@ extension TileView {
     
     func contract() {
         
+        if !previewConstraints.isEmpty {
+            
+            for constraint in fullScreenConstraints {
+                constraint.isActive = false
+            }
+            
+            for constraint in previewConstraints {
+                constraint.isActive = true
+            }
+        }
+        
         UIView.animate(withDuration: 1, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             self.layer.cornerRadius = 20
@@ -85,6 +96,18 @@ extension TileView {
     }
     
     func expand() {
+        
+        if !previewConstraints.isEmpty {
+            
+            for constraint in fullScreenConstraints {
+                constraint.isActive = true
+            }
+            
+            for constraint in previewConstraints {
+                constraint.isActive = false
+            }
+        }
+        
         self.pull(forDuration: 0.3, fromVal: 0.95, toVal: 1)
         
         UIView.animate(withDuration: 0.3) {

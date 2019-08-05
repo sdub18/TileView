@@ -39,6 +39,7 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     var contentOffset: CGPoint = CGPoint.zero
     
     /*
+                                            *** IMPORTANT INFORMATION ****
      
      Tile View Array is an array that stores all Tile View Objects [Defined in an anonymous closure]. This is where you will add your additional object as well as specify the size you initially want it to be as well as the subview you want to put inside of it
      
@@ -51,7 +52,11 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
      
      */
     
+    // MARK: Tile View Data
+    
     var tileViewArray : [TileView] = [
+        
+        // EXAMPLE OBJECTS FOR USE
     
         // Calendar
         { () -> TileView in
@@ -139,6 +144,66 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
 
             return tileView
         }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 6
+
+            return tileView
+        }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 6
+
+            return tileView
+        }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 6
+
+            return tileView
+        }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 6
+
+            return tileView
+        }() ,
+        
+        { () -> TileView in
+
+            let tileView = TileView(ofType: .personalTasks, withTitle: "Tasks", primaryTitleColor: Colors.PERSONAL_TASKS_PRIMARY_COLOR, sizeClass: .previewCompact)
+            tileView.translatesAutoresizingMaskIntoConstraints = false
+            let personalTasksView = PersonalTasksView()
+            tileView.contentView.addConstrainedSubview(personalTasksView, top: 0, right: 0, bottom: 0, left: 0)
+            tileView.dataSource = personalTasksView
+            tileView.tag = 6
+
+            return tileView
+        }() ,
     
     
     ]
@@ -164,11 +229,7 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     }
     
     override func viewWillLayoutSubviews() {
-        
-        if selectedCell != NO_CELL_SELECTED {
-            self.collectionView.scrollToItem(at: IndexPath(item: selectedCell, section: 0), at: .top, animated: true)
-        }
-        
+        // Necessary to resize views upon device rotation and reorientation
         collectionView.reloadData()
     }
     
@@ -184,7 +245,7 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         
     }
     
-    // MARK: Handle Delegatation
+    // MARK: Tile View Delegation
     func tileViewObjectDidExpand(_ tileViewObject: TileView) {
         
         collectionView.performBatchUpdates({
@@ -209,7 +270,7 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         }, completion: nil)
     }
     
-    // MARK: Handle Collection View
+    // MARK: Collection View Cell Layout
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tileViewArray.count
@@ -219,7 +280,6 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TileViewCell", for: indexPath) as! TileViewCell
         
         cell.tileView = tileViewArray[indexPath.row]
-        
         cell.addSubview(cell.tileView)
         
         NSLayoutConstraint.activate([
@@ -235,7 +295,8 @@ class ExampleViewController: UIViewController, TileViewSourceDelegate, UICollect
     }
     
 }
-
+// MARK: Collection View Flow Layout
+// Used to appropriately size and orient tile view objects within collection view
 extension ExampleViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
